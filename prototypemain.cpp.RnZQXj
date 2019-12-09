@@ -1,9 +1,11 @@
 #include "prototypemain.h"
 #include "ui_prototypemain.h"
 #include "accountdetails.h"
+#include <pthread.h>
 
 #include <QFileDialog>
 #include <QDir>
+#include <chrono>
 
 PrototypeMain::PrototypeMain(QWidget *parent)
     : QWidget(parent)
@@ -23,6 +25,24 @@ void PrototypeMain::on_uploadButton_clicked()
     QString filename = QFileDialog::getOpenFileName(this, tr("Open Text file:"), "", "");
 }
 
+void* PrototypeMain::processAnalysis()
+{
+    int value;
+    for(long int i = 0; i <= 1000000000; i++){
+        value = i / 10000000;
+        if(value > 10){
+            ui->loadingLabel_2->setVisible(true);
+        }
+        if(value > 30){
+            ui->loadingLabel_3->setVisible(true);
+        }
+        if(value > 80){
+            ui->loadingLabel_4->setVisible(true);
+        }
+        ui->analyseProgress->setValue(value);
+    }
+    pthread_exit(NULL);
+}
 
 void PrototypeMain::on_analyseButton_clicked()
 {
@@ -31,23 +51,12 @@ void PrototypeMain::on_analyseButton_clicked()
    ui->loadingLabel_3->setVisible(false);
    ui->loadingLabel_4->setVisible(false);
    ui->stackedWidget->setCurrentIndex(1);
+   pthread_t extra_thread;
+
+   int value = 1000000000;
+   pthread_create(&extra_thread, NULL, processAnalysis,(void *)value);
+
    ui->continueButton->setVisible(true);
-}
-
-void PrototypeMain::trigger_label(int number){
-    if(number == 2){
-        ui->loadingLabel_2->setVisible(true);
-    }
-    else if(number == 3){
-        ui->loadingLabel_3->setVisible(true);
-    }
-    else if(number == 4){
-        ui->loadingLabel_4->setVisible(true);
-    }
-}
-
-void PrototypeMain::analyseProgress(int number){
-    ui->analyseProgress->setValue(number);
 }
 
 void PrototypeMain::on_backbutton_clicked()

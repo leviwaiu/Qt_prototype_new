@@ -15,6 +15,10 @@ public:
     PrototypeMain(QWidget *parent = nullptr);
     ~PrototypeMain();
 
+    void trigger_label(int number);
+
+    void analyseProgress(int number);
+
 private slots:
     void on_uploadButton_clicked();
 

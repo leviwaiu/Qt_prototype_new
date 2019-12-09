@@ -8,7 +8,7 @@ accountDetails::accountDetails(QWidget *parent) :
     ui(new Ui::accountDetails)
 {
     ui->setupUi(this);
-    ui->accountList->insertItem(0,"IBM Technologies");
+    ui->accountList->insertItem(0,"IBM Cloud Services");
     ui->accountList->insertItem(1,"Microsoft Azure");
     ui->passwordField->setEchoMode(QLineEdit::Password);
 }
